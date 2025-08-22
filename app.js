@@ -1,16 +1,14 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const Listing = require('./models/listing');  
-const Review = require('./models/review');
 const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
-const wrapAsync = require("./utils/wrapasync");
 const ExpressError = require('./utils/ExpressError');
-const {listingSchema,} = require('./schema.js');
-const {reviewSchema} = require('./schema.js');
 
+
+const listings = require('./routes/listing.js');
+const reviews = require('./routes/review.js');
 
 const MONGO_URL= 'mongodb://127.0.0.1:27017/stayfinder'
 main().then(() => {
@@ -30,92 +28,12 @@ app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
-  
+  res.redirect('/listings'); 
 });
 
-const validateListing = (req, res, next) => {
-  let{error} = listingSchema.validate(req.body);
-   let errMsg =error.details.map((el)=>el.message).join(',');
-   if(error){
-    throw new ExpressError(400, error);
-   }else{
-    next();
-   }
-};
-//for review validation
-const validateReview = (req, res, next) => {
-  let { error } = reviewSchema.validate(req.body);
-  let errMsg = error && error.details ? error.details.map((el) => el.message).join(",") : "";
-  if (error) {
-    // If error is about extra fields, show a user-friendly message
-    throw new ExpressError(errMsg || 'Invalid review data', 400);
-  } else {
-    next();
-  }
-};
-//index route
-app.get('/listings',wrapAsync( async (req, res) => {
-  const allListings= await Listing.find({});
-    res.render("listings/index.ejs", {allListings});
-  })
-);
-  //lsings new route
-app.get('/listings/new', (req, res) => {
-  res.render('listings/new.ejs');
-});
-//show route
-app.get('/listings/:id',wrapAsync(async (req, res,) => {
-  const{id} = req.params;
-  const listing= await Listing.findById(id).populate('reviews');
-  res.render("listings/show.ejs", {listing});
-}));
-//create route
-app.post('/listings', validateListing,
-   wrapAsync(async (req, res, next) => {
-  
-  const newListing = new Listing(req.body);
-  await newListing.save();
-  res.redirect('/listings');
-})
-);
-//edit route
-app.get('/listings/:id/edit',wrapAsync(async (req, res) => {
-  const{id} = req.params;
-  const listing = await Listing.findById(id);
-  res.render('listings/edit.ejs', {listing});
-}));
-//update route
-app.put('/listings/:id' , validateListing, wrapAsync(async (req, res) => {
-  const{id}=req.params;
-  const updatedListing = await Listing.findByIdAndUpdate(id, {...req.body});
-  res.redirect(`/listings/${updatedListing._id}`); // Redirect to the updated listing's show page
-}));
-//delete route
-app.delete('/listings/:id',wrapAsync(async(req,res)=>{
-  const {id} = req.params;
-  await Listing.findByIdAndDelete(id);
-  res.redirect('/listings');
-}));
+app.use('/listings', listings);
+app.use("/listings/:id/reviews", reviews);
 
-//reviews routes
-app.post('/listings/:id/reviews',validateReview, wrapAsync(async (req, res) => {
-  let listing = await Listing.findById(req.params.id);
-  const review = new Review(req.body.review);
-  listing.reviews.push(review);
-
-  await review.save();
-  await listing.save();
-
-  res.redirect(`/listings/${listing._id}`);
-}));
-//delete review route
-app.delete('/listings/:id/reviews/:reviewId', wrapAsync(async (req, res) => {
-  const { id, reviewId } = req.params;
-  await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-  await Review.findByIdAndDelete(reviewId);
-  res.redirect(`/listings/${id}`);
-}));
 
 // Catch-all 404 (works in Express 5)
 app.use((req, res, next) => {
