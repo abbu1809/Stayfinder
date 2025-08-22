@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const Listing = require('./models/listing');  
+const Review = require('./models/review');
 const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
@@ -83,6 +84,20 @@ app.delete('/listings/:id',wrapAsync(async(req,res)=>{
   await Listing.findByIdAndDelete(id);
   res.redirect('/listings');
 }));
+
+//reviews routes
+
+app.post('/listings/:id/reviews', wrapAsync(async (req, res) => {
+  let listing = await Listing.findById(req.params.id);
+  const review = new Review(req.body.review);
+  listing.reviews.push(review);
+
+  await review.save();
+  await listing.save();
+
+  res.redirect(`/listings/${listing._id}`);
+}));
+
 
 // Catch-all 404 (works in Express 5)
 app.use((req, res, next) => {
