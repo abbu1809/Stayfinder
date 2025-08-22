@@ -8,7 +8,9 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const wrapAsync = require("./utils/wrapasync");
 const ExpressError = require('./utils/ExpressError');
-const {listingSchema} = require('./schema.js');
+const {listingSchema,} = require('./schema.js');
+const {reviewSchema} = require('./schema.js');
+
 
 const MONGO_URL= 'mongodb://127.0.0.1:27017/stayfinder'
 main().then(() => {
@@ -40,7 +42,18 @@ const validateListing = (req, res, next) => {
    }else{
     next();
    }
-}
+};
+//for review validation
+const validateReview = (req, res, next) => {
+  let { error } = reviewSchema.validate(req.body);
+  let errMsg = error && error.details ? error.details.map((el) => el.message).join(",") : "";
+  if (error) {
+    // If error is about extra fields, show a user-friendly message
+    throw new ExpressError(errMsg || 'Invalid review data', 400);
+  } else {
+    next();
+  }
+};
 //index route
 app.get('/listings',wrapAsync( async (req, res) => {
   const allListings= await Listing.find({});
@@ -54,7 +67,7 @@ app.get('/listings/new', (req, res) => {
 //show route
 app.get('/listings/:id',wrapAsync(async (req, res,) => {
   const{id} = req.params;
-  const listing= await Listing.findById(id); 
+  const listing= await Listing.findById(id).populate('reviews');
   res.render("listings/show.ejs", {listing});
 }));
 //create route
@@ -86,8 +99,7 @@ app.delete('/listings/:id',wrapAsync(async(req,res)=>{
 }));
 
 //reviews routes
-
-app.post('/listings/:id/reviews', wrapAsync(async (req, res) => {
+app.post('/listings/:id/reviews',validateReview, wrapAsync(async (req, res) => {
   let listing = await Listing.findById(req.params.id);
   const review = new Review(req.body.review);
   listing.reviews.push(review);
@@ -97,7 +109,13 @@ app.post('/listings/:id/reviews', wrapAsync(async (req, res) => {
 
   res.redirect(`/listings/${listing._id}`);
 }));
-
+//delete review route
+app.delete('/listings/:id/reviews/:reviewId', wrapAsync(async (req, res) => {
+  const { id, reviewId } = req.params;
+  await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+  await Review.findByIdAndDelete(reviewId);
+  res.redirect(`/listings/${id}`);
+}));
 
 // Catch-all 404 (works in Express 5)
 app.use((req, res, next) => {
@@ -105,10 +123,13 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  const message = err.message || "Something went wrong";
-  res.status(statusCode).render("error.ejs",{message});
-  // res.status(statusCode).send(message);
+  const statusCode = typeof err.statusCode === "number" ? err.statusCode : 500;
+  let message = err.message || "Something went wrong";
+  // If Joi error, extract message safely
+  if (err && err.details && Array.isArray(err.details)) {
+    message = err.details.map(el => el.message).join(", ");
+  }
+  res.status(statusCode).render("error.ejs", { message });
 });
 
 app.listen(3000, () => {

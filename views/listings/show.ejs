@@ -3,7 +3,7 @@
     <div class="col-8 offset-3 ">
         <h3><b><%=listing.title%></b></h3>
     </div>
-    <div class="card col-6 offset-3 show-card">
+    <div class="card col-6 offset-3 show-card listing-card">
         <img src="<%=listing.image.url%>" class="card-img-top show-img" alt="listing_image">
   <div class="card-body">
     <p class="card-text">
@@ -35,19 +35,36 @@
         <form action="/listings/<%=listing._id%>/reviews" method="POST" class="needs-validation" novalidate>
             <div class="mb-3 mt-3">
                 <label for="rating" class="form-label">Rating</label>
-                <input type="range" min="1" max="5" id="rating" name="review[rating]" class="form-range">
+                <input type="range" min="1" max="5" id="rating" name="review[rating]" class="form-range" >
             </div>
             <div class="mb-3 mt-3" >
                 <label for="comment" class="form-label">Comments</label>
                 <textarea id="comment" name="review[comment]" rows="4" cols="50" class="form-control" required></textarea>
+                </div>
                 <div class="valid-feedback">
                 Comment Looks good!
-                </div>
-                <div class="invalid-feedback">
-                Please provide a valid Comment.
-                </div>
+            </div>
+            <div class="invalid-feedback">
+            Please provide a valid Comment.
+            </div>
             <button class="btn btn-outline-dark">Submit</button>
         </form>
+        <hr>
+        <p><b>All Reviews</b></p>
+        <div class="row">
+        <% for (review of listing.reviews) { %>
+          <div class="card col-5 ms-3 mb-3 ">
+             <div class="card-body">
+            <h5 class="card-title mt-3">abhishek</h5>
+            <p class="card-text"><%=review.comment%></p>
+            <p class="card-text mb-3"> Rating: <%=review.rating%> stars</p>
+          </div>
+          <form class="mb-3" action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
+            <button class="btn"><i class="fa-solid fa-trash" style="color: #cd1d1d;"></i> Delete</button>
+        </form>
+        </div>
+        <%}%>
+           </div> 
     </div>
  </div>
     
