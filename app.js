@@ -19,8 +19,7 @@ const e = require('connect-flash');
 const MONGO_URL= 'mongodb://127.0.0.1:27017/stayfinder'
 main().then(() => {
   console.log('Connected to MongoDB');
-})
-.catch(err => console.log(err));
+}).catch(err => console.log(err));
 
 async function main() {
   await mongoose.connect(MONGO_URL);
@@ -33,7 +32,6 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
 
-
 const sessionOptions = {
   secret:"thisshouldbeabettersecret!",
   resave: false,
@@ -42,14 +40,12 @@ const sessionOptions = {
     expire: Date.now() + 1000*60*60*24*7,
     maxAge: 1000*60*60*24*7,
     httpOnly: true,
-
   }
 }
 
 app.get('/', (req, res) => {
   res.redirect('/listings'); 
 });
-
 
 app.use(session(sessionOptions));
 app.use(flash()); 
@@ -64,6 +60,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
+  res.locals.currentUser = req.user;
   next();
 });
 
@@ -87,10 +84,6 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   const statusCode = typeof err.statusCode === "number" ? err.statusCode : 500;
   let message = err.message || "Something went wrong";
-  // If Joi error, extract message safely
-  if (err && err.details && Array.isArray(err.details)) {
-    message = err.details.map(el => el.message).join(", ");
-  }
   res.status(statusCode).render("error.ejs", { message });
 });
 
