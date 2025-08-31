@@ -1,20 +1,36 @@
-<%if(success&&success.length){%>
-<div class="alert alert-success alert-dismissible fade show col-6 offset-3" role="alert">
-  <%=success%>
-   <button 
-   type="button" 
-   class="btn-close"
-   data-bs-dismiss="alert" 
-   aria-label="Close"></button>
-</div>
-<%}%>
-<%if(error&&error.length){%>
-<div class="alert alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
-  <%=error%>
-   <button 
-   type="button" 
-   class="btn-close"
-   data-bs-dismiss="alert" 
-   aria-label="Close"></button>
-</div>
-<%}%>
+<% if (success && success.length) { %>
+  <div class="alert alert-success alert-dismissible fade show col-10 col-md-6 offset-1 offset-md-3 shadow rounded-3 border-0 position-fixed start-50 translate-middle-x"
+       role="alert"
+       id="flash-success"
+       style="font-size: 1.08rem; font-weight: 500; background: linear-gradient(90deg, #e0ffe0 70%, #d1fae5 100%); box-shadow: 0 4px 24px #22c55e33; top: 80px; z-index: 1055;">
+    <i class="fa-solid fa-circle-check me-2 text-success"></i>
+    <%= success %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+<% if (error && error.length) { %>
+  <div class="alert alert-danger alert-dismissible fade show col-10 col-md-6 offset-1 offset-md-3 shadow rounded-3 border-0 position-fixed start-50 translate-middle-x"
+       role="alert"
+       id="flash-error"
+       style="font-size: 1.08rem; font-weight: 500; background: linear-gradient(90deg, #ffe0e0 70%, #fee2e2 100%); box-shadow: 0 4px 24px #ef444433; top: 80px; z-index: 1055;">
+    <i class="fa-solid fa-circle-exclamation me-2 text-danger"></i>
+    <%= error %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+<script>
+  setTimeout(() => {
+    const successAlert = document.getElementById('flash-success');
+    if (successAlert) {
+      successAlert.classList.remove('show');
+      successAlert.classList.add('hide');
+      setTimeout(() => successAlert.remove(), 500);
+    }
+    const errorAlert = document.getElementById('flash-error');
+    if (errorAlert) {
+      errorAlert.classList.remove('show');
+      errorAlert.classList.add('hide');
+      setTimeout(() => errorAlert.remove(), 500);
+    }
+  }, 10000);
+</script>

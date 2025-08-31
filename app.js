@@ -1,3 +1,8 @@
+if (process.env.NODE_ENV !== "production") {
+require('dotenv').config();
+}
+
+require('events').EventEmitter.defaultMaxListeners = 20;
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -10,6 +15,9 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+
 
 const listingRouter = require('./routes/listing.js');
 const reviewRouter = require('./routes/review.js');

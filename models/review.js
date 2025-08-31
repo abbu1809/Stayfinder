@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require('./user.js');
 
 const Schema = mongoose.Schema;
 
@@ -14,6 +15,11 @@ const reviewSchema = new Schema({
         type: Date,
         default: Date.now(),
     },
+    author:{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },
+    
 });
 
 module.exports = mongoose.model('Review', reviewSchema);

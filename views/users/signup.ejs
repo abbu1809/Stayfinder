@@ -1,42 +1,48 @@
-<%layout("/layouts/boilerplate")%>
-
-<div class="row mt-3">
-       <h3 class="col-6 offset-3">Sign Up</h3>
-        <div class="col-6 offset-3">
-         
-            <form action="/signup" method="POST" novalidate class="needs-validation">
-                
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" required>
-                    <div class="valid-feedback">
-                        Username looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                        Please provide a valid username.
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
-                    <div class="valid-feedback">
-                        Email looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                        Please provide a valid email.
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
-                    <div class="valid-feedback">
-                        Password looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                        Please provide a valid password.
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Sign Up</button>
-            </form>
+<% layout("/layouts/boilerplate") %>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+  <div class="card shadow-lg border-0 rounded-4" style="max-width: 500px; width: 100%; background: linear-gradient(120deg, #f8fafc 70%, #e0e7ff 100%); padding: 2.5rem 2rem;">
+    <div class="card-header text-center border-0 bg-transparent mb-2">
+      <span class="rounded-circle bg-primary-subtle mb-3 justify-content-center align-items-center" style="width: 65px; height: 65px;">
+        <i class="bi bi-person-plus text-primary" style="font-size: 2.2rem;"></i>
+      </span>
+      <h2 class="mb-0" style="font-family: 'Plus Jakarta Sans', sans-serif; color: #2563eb; font-weight: 700;">Sign Up</h2>
+    </div>
+    <div class="card-body">
+      <form action="/signup" method="POST" novalidate class="needs-validation">
+        <div class="mb-4">
+          <label for="username" class="form-label" style="font-weight: 600;">Username</label>
+          <input type="text" class="form-control" id="username" name="username" required
+            style="transition: box-shadow 0.2s;"
+            onfocus="this.style.boxShadow='0 0 0 0.2rem #2563eb33';"
+            onblur="this.style.boxShadow='none';">
         </div>
+        <div class="mb-4">
+          <label for="email" class="form-label" style="font-weight: 600;">Email address</label>
+          <input type="email" class="form-control" id="email" name="email" required
+            style="transition: box-shadow 0.2s;"
+            onfocus="this.style.boxShadow='0 0 0 0.2rem #2563eb33';"
+            onblur="this.style.boxShadow='none';">
         </div>
+        <div class="mb-4">
+          <label for="password" class="form-label" style="font-weight: 600;">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required
+            style="transition: box-shadow 0.2s;"
+            onfocus="this.style.boxShadow='0 0 0 0.2rem #2563eb33';"
+            onblur="this.style.boxShadow='none';">
+        </div>
+        <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill shadow-sm"
+          style="font-size: 1.1rem; font-weight: 600; letter-spacing: 0.5px; transition: background 0.2s, box-shadow 0.2s;"
+          onmouseover="this.style.background='#1d4ed8'; this.style.boxShadow='0 4px 16px #2563eb33';"
+          onmouseout="this.style.background='#2563eb'; this.style.boxShadow='none';">
+          <i class="bi bi-person-plus"></i> Sign Up
+        </button>
+      </form>
+    </div>
+    <div class="card-footer bg-transparent border-0 text-center mt-2">
+      <small class="text-muted" style="font-size: 0.95rem;">
+        Already have an account?
+        <a href="/login" class="text-primary text-decoration-underline" style="font-weight: 600;">Login</a>
+      </small>
+    </div>
+  </div>
+</div>
