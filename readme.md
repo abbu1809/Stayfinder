@@ -40,7 +40,7 @@ StayFinder is a modern Airbnb-inspired web application built with Node.js, Expre
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/yourusername/stayfinder.git
+   git clone https://github.com/abbu1809/Stayfinder.git
    cd stayfinder
    ```
 
