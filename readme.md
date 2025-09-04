@@ -1,4 +1,4 @@
-# StayFinder - Airbnb Clone
+# StayFinder
 
 StayFinder is a modern Airbnb-inspired web application built with Node.js, Express, MongoDB, and EJS. It allows users to create, browse, review, and manage property listings with authentication, image uploads, and a beautiful UI.
 
@@ -40,7 +40,7 @@ StayFinder is a modern Airbnb-inspired web application built with Node.js, Expre
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/yourusername/stayfinder.git
+   git clone https://github.com/abbu1809/Stayfinder.git
    cd stayfinder
    ```
 
