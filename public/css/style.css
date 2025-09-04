@@ -137,3 +137,12 @@ body{
     
 
 }
+
+/* map */
+
+#map { 
+    height: 400px; 
+    width: 60vh; 
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+ }

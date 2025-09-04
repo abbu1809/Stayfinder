@@ -1,10 +1,10 @@
- <%layout("/layouts/boilerplate")%>
+<%layout("/layouts/boilerplate")%>
  <br>
  <br>
 <div class="row">
         <div class="col-8 offset-2">
     <h3>Edit your listing</h3>
-    <form method="POST" action="/listings/<%=listing._id%>?_method=PUT" novalidate class="needs-validation">
+    <form method="POST" action="/listings/<%=listing._id%>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="title" class=" form-label">Title</label>
         <input name="title" value="<%=listing.title%>" type="text" class="form-control" required>
@@ -20,7 +20,7 @@
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
             <br>
-             <textarea name="description" class="form-control" required><%=listing.description%></textarea>
+             <textarea name="description" class="form-control" required><%- listing.description %></textarea>
              <div class="valid-feedback">
           description Looks good!
          </div>
@@ -29,14 +29,21 @@
          </div>
         </div>
 
+         <div class="mb-3">
+             <label for="image" class="form-label">Current Image</label>
+             <img src="<%=originalUrl %>" alt="listing_image" style=" width: auto; display: block; margin-bottom: 1rem;">
+             </div>
         <div class="mb-3">
-             <label for="image" class="form-label">Image URL</label>
-             <input name="image" value="<%=listing.image%>" type="text" class="form-control" required>
+             <label for="image" class="form-label">Upload Image</label>
+             <input name="image" 
+             type="file" 
+             class="form-control" 
+             required>
                 <div class="valid-feedback">
-          Image URL Looks good!
+          Image Looks good!
          </div>
          <div class="invalid-feedback">
-          Please provide a valid Image URL.
+          Please provide a valid Image.
          </div>
         </div>
           <div class="row">

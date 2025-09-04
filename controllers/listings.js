@@ -1,8 +1,8 @@
 const Listing = require('../models/listing');
-const ExpressError = require('../utils/ExpressError');
-const review = require('../models/review');
-const {listingSchema} = require('../schema.js');
-//inex route
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapToken = process.env.MAP_TOKEN;
+const geocodingClient = mbxGeocoding({ accessToken: mapToken });
+//index route
 module.exports.index= async (req, res) => {
   const allListings= await Listing.find({});
     res.render("listings/index.ejs", {allListings});
@@ -28,13 +28,22 @@ module.exports.show =async (req, res, next) => {
 
 //create route
 module.exports.create=async (req, res, next) => {
+   let response=await geocodingClient.forwardGeocode({
+    query: req.body.location,
+    limit: 1
+}).send();
+
   let url = req.file.path;
   let filename = req.file.filename;
  
   const newListing = new Listing(req.body);
   newListing.owner=req.user._id;
   newListing.image = {url, filename};
+
+  newListing.geometry=response.body.features[0].geometry; 
+
   await newListing.save();
+
   req.flash('success', 'Successfully made a new listing!');
   res.redirect('/listings');
 };
@@ -48,13 +57,21 @@ module.exports.edit =async (req, res, next) => {
     req.flash('error', 'Listing not found!');
     return res.redirect('/listings'); // <-- Add return here
   }
-  res.render('listings/edit.ejs', { listing });
+ let originalUrl=listing.image.url;
+ originalUrl=originalUrl.replace('/upload','/upload/w_250');
+  res.render('listings/edit.ejs', { listing,originalUrl });
 };
 
 //update route
 module.exports.update= async (req, res) => {
   const{id}=req.params;
   const updatedListing = await Listing.findByIdAndUpdate(id, {...req.body});
+  if (typeof req.file !== 'undefined') {
+  let url = req.file.path;
+  let filename = req.file.filename;
+  updatedListing.image = {url, filename};
+  await updatedListing.save();
+  }
   req.flash('success', 'Successfully updated listing!');
   res.redirect(`/listings/${updatedListing._id}`); // Redirect to the updated listing's show page
 };
