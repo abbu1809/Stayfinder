@@ -1,46 +1,60 @@
-<footer class="mt-5" style="background: linear-gradient(90deg, #f8fafc 70%, #e0e7ff 100%); border-top: 1px solid #e5e7eb;">
+<footer class="mt-5" style="background: linear-gradient(90deg, #e0e7ff 60%, #f8fafc 100%); border-top: 1px solid #e5e7eb; box-shadow: 0 -2px 16px #6366f133;">
   <div class="container py-4">
     <div class="row align-items-center">
       <div class="col-md-4 text-center mb-3 mb-md-0">
-        <div class="f-info-socials">
-          <a href="https://facebook.com" target="_blank" class="mx-2 text-primary" style="font-size: 1.5rem;">
+        <div class="f-info-socials mb-2">
+          <a href="https://facebook.com" target="_blank" class="mx-2 text-primary" style="font-size: 1.7rem; transition: color 0.2s;">
             <i class="fa-brands fa-facebook"></i>
           </a>
-          <a href="https://instagram.com" target="_blank" class="mx-2 text-danger" style="font-size: 1.5rem;">
+          <a href="https://instagram.com" target="_blank" class="mx-2 text-danger" style="font-size: 1.7rem; transition: color 0.2s;">
             <i class="fa-brands fa-instagram"></i>
           </a>
-          <a href="https://linkedin.com" target="_blank" class="mx-2 text-info" style="font-size: 1.5rem;">
+          <a href="https://linkedin.com" target="_blank" class="mx-2 text-info" style="font-size: 1.7rem; transition: color 0.2s;">
             <i class="fa-brands fa-linkedin"></i>
           </a>
-          <a href="mailto:" class="mx-2 text-secondary" style="font-size: 1.5rem;">
+          <a href="mailto:" class="mx-2 text-secondary" style="font-size: 1.7rem; transition: color 0.2s;">
             <i class="fa-solid fa-envelope"></i>
           </a>
         </div>
+        <div class="mt-2">
+          <span class="text-muted" style="font-size: 0.95rem;">Follow us for updates</span>
+        </div>
       </div>
       <div class="col-md-4 text-center mb-3 mb-md-0">
-        <div class="f-info-brand" style="font-weight: 600; font-size: 1.1rem;">
+        <div class="f-info-brand mb-1" style="font-weight: 700; font-size: 1.15rem; letter-spacing: 1px;">
           &copy; Stayfinder Private Ltd.
         </div>
         <div class="mt-2">
-          <a href="/about" class="mx-2 text-decoration-none text-dark">About Us</a>
-          <span>|</span>
-          <a href="/contact" class="mx-2 text-decoration-none text-dark">Contact</a>
-          <span>|</span>
-          <a href="/faq" class="mx-2 text-decoration-none text-dark">FAQ</a>
+          <a href="/about" class="mx-2 text-decoration-none text-dark fw-semibold">About Us</a>
+          <span class="text-muted">|</span>
+          <a href="/contact" class="mx-2 text-decoration-none text-dark fw-semibold">Contact</a>
+          <span class="text-muted">|</span>
+          <a href="/faq" class="mx-2 text-decoration-none text-dark fw-semibold">FAQ</a>
         </div>
       </div>
       <div class="col-md-4 text-center">
-        <div class="f-info-links">
-          <a href="/privacy" class="mx-2 text-decoration-none text-dark">Privacy Policy</a>
-          <span>|</span>
-          <a href="/terms" class="mx-2 text-decoration-none text-dark">Terms of Service</a>
-          <span>|</span>
-          <a href="/careers" class="mx-2 text-decoration-none text-dark">Careers</a>
+        <div class="f-info-links mb-1">
+          <a href="/privacy" class="mx-2 text-decoration-none text-dark fw-semibold">Privacy Policy</a>
+          <span class="text-muted">|</span>
+          <a href="/terms" class="mx-2 text-decoration-none text-dark fw-semibold">Terms of Service</a>
+          <span class="text-muted">|</span>
+          <a href="/careers" class="mx-2 text-decoration-none text-dark fw-semibold">Careers</a>
         </div>
         <div class="mt-2">
-          <small class="text-muted">Made with <i class="fa-solid fa-heart text-danger"></i> by Stayfinder Team</small>
+          <small class="text-muted">Made with <i class="fa-solid fa-heart text-danger"></i> by <span class="fw-bold text-primary">Stayfinder Team</span></small>
         </div>
       </div>
     </div>
   </div>
 </footer>
+<style>
+  .f-info-socials a:hover {
+    color: #6366f1 !important;
+    text-shadow: 0 2px 8px #6366f133;
+  }
+  .f-info-links a:hover,
+  .f-info-brand a:hover {
+    color: #2563eb !important;
+    text-decoration: underline;
+  }
+</style>

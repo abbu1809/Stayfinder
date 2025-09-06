@@ -18,7 +18,6 @@ const User = require('./models/user');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
-
 const listingRouter = require('./routes/listing.js');
 const reviewRouter = require('./routes/review.js');
 const userRouter= require('./routes/user.js');
@@ -55,6 +54,7 @@ app.get('/', (req, res) => {
   res.redirect('/listings'); 
 });
 
+
 app.use(session(sessionOptions));
 app.use(flash()); 
 
@@ -70,6 +70,9 @@ app.use((req, res, next) => {
   res.locals.error = req.flash('error');
   res.locals.currentUser = req.user;
   next();
+});
+app.get('/coming-soon', (req, res) => {
+  res.render("coming-soon");
 });
 
 // app.get('/demouser', async (req, res) => {

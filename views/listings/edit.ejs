@@ -1,87 +1,79 @@
-<%layout("/layouts/boilerplate")%>
- <br>
- <br>
-<div class="row">
-        <div class="col-8 offset-2">
-    <h3>Edit your listing</h3>
-    <form method="POST" action="/listings/<%=listing._id%>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="title" class=" form-label">Title</label>
-        <input name="title" value="<%=listing.title%>" type="text" class="form-control" required>
-         <div class="valid-feedback">
-          Title Looks good!
-         </div>
-         <div class="invalid-feedback">
-          Please provide a valid Title.
-         </div>
-        
-        </div>
-
-        <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <br>
-             <textarea name="description" class="form-control" required><%- listing.description %></textarea>
-             <div class="valid-feedback">
-          description Looks good!
-         </div>
-         <div class="invalid-feedback">
-          Please provide a valid Description.
-         </div>
-        </div>
-
-         <div class="mb-3">
-             <label for="image" class="form-label">Current Image</label>
-             <img src="<%=originalUrl %>" alt="listing_image" style=" width: auto; display: block; margin-bottom: 1rem;">
-             </div>
-        <div class="mb-3">
-             <label for="image" class="form-label">Upload Image</label>
-             <input name="image" 
-             type="file" 
-             class="form-control" 
-             required>
-                <div class="valid-feedback">
-          Image Looks good!
-         </div>
-         <div class="invalid-feedback">
-          Please provide a valid Image.
-         </div>
-        </div>
-          <div class="row">
-            <div class="mb-3 col-md-4">
-            <label for="price" class="form-label">Price</label>
-            <input name="price" value="<%=listing.price%>" type="number" class="form-control" required>
-            <div class="valid-feedback">
-          Price Looks good!
-         </div>
-         <div class="invalid-feedback">
-          Please provide a valid Price.
-         </div>
-        </div>
-
-        <div class="mb-3 col-md-8">
-            <label for="country" class="form-label">Country</label>
-            <input name="country" value="<%=listing.country%>" type="text" class="form-control" required>
-            <div class="valid-feedback">
-          Country Looks good!
-         </div>
-         <div class="invalid-feedback">
-          Please provide a valid Country.
-         </div>
-        </div>
-          </div>
-        
-
-        <div class="mb-3">
-            <label for="city" class="form-label">Location</label>
-            <input name="location" value="<%=listing.location%>" type="text" class="form-control" required>
-            <div class="valid-feedback">
-            Location looks good!
-         </div>
-         <div class="invalid-feedback">
-          Please provide a valid location.
-         </div>
-        </div>
-        <button class="btn btn-dark edit-btn mt-3">Edit</button>
-    </form>
-</div>
+<% layout("/layouts/boilerplate") %>
+<div class="container d-flex justify-content-center align-items-start" style="min-height: 90vh; margin-top: 48px;">
+  <div class="card shadow-lg border-0 rounded-4" style="max-width: 650px; width: 100%; background: linear-gradient(120deg, #f8fafc 70%, #e0e7ff 100%); padding: 2.5rem 2rem;">
+    <div class="card-header text-center border-0 bg-transparent mb-2">
+      <span class="rounded-circle bg-warning-subtle mb-3 justify-content-center align-items-center" style="width: 65px; height: 65px;">
+        <i class="bi bi-pencil-square text-warning" style="font-size: 2.2rem;"></i>
+      </span>
+      <h2 class="mb-0" style="font-family: 'Plus Jakarta Sans', sans-serif; color: #f59e42; font-weight: 700;">Edit Your Listing</h2>
+      <p class="text-secondary mt-2" style="font-size: 1.05rem;">Update your property details and keep your listing fresh!</p>
     </div>
+    <div class="card-body">
+      <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="title" class="form-label" style="font-weight: 600;">Title</label>
+          <input name="title" value="<%= listing.title %>" type="text" class="form-control" required
+            style="transition: box-shadow 0.2s;"
+            onfocus="this.style.boxShadow='0 0 0 0.2rem #f59e4233';"
+            onblur="this.style.boxShadow='none';">
+          <div class="valid-feedback">Title looks good!</div>
+          <div class="invalid-feedback">Please provide a valid Title.</div>
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label" style="font-weight: 600;">Description</label>
+          <textarea name="description" class="form-control" required
+            style="transition: box-shadow 0.2s;"
+            onfocus="this.style.boxShadow='0 0 0 0.2rem #f59e4233';"
+            onblur="this.style.boxShadow='none';"><%- listing.description %></textarea>
+          <div class="valid-feedback">Description looks good!</div>
+          <div class="invalid-feedback">Please provide a valid Description.</div>
+        </div>
+        <div class="mb-3 text-center">
+          <label class="form-label" style="font-weight: 600;">Current Image</label><br>
+          <img src="<%= originalUrl %>" alt="listing_image" class="img-fluid rounded shadow-sm mb-2" style="max-height: 180px; border: 2px solid #fbbf24;">
+        </div>
+        <div class="mb-3">
+          <label for="image" class="form-label" style="font-weight: 600;">Upload New Image</label>
+          <input name="image" type="file" class="form-control" required>
+          <div class="valid-feedback">Image looks good!</div>
+          <div class="invalid-feedback">Please provide a valid Image.</div>
+        </div>
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="price" class="form-label" style="font-weight: 600;">Price</label>
+            <input name="price" value="<%= listing.price %>" type="number" class="form-control" required
+              style="transition: box-shadow 0.2s;"
+              onfocus="this.style.boxShadow='0 0 0 0.2rem #f59e4233';"
+              onblur="this.style.boxShadow='none';">
+            <div class="valid-feedback">Price looks good!</div>
+            <div class="invalid-feedback">Please provide a valid Price.</div>
+          </div>
+          <div class="mb-3 col-md-8">
+            <label for="country" class="form-label" style="font-weight: 600;">Country</label>
+            <input name="country" value="<%= listing.country %>" type="text" class="form-control" required
+              style="transition: box-shadow 0.2s;"
+              onfocus="this.style.boxShadow='0 0 0 0.2rem #f59e4233';"
+              onblur="this.style.boxShadow='none';">
+            <div class="valid-feedback">Country looks good!</div>
+            <div class="invalid-feedback">Please provide a valid Country.</div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="city" class="form-label" style="font-weight: 600;">Location</label>
+          <input name="location" value="<%= listing.location %>" type="text" class="form-control" required
+            style="transition: box-shadow 0.2s;"
+            onfocus="this.style.boxShadow='0 0 0 0.2rem #f59e4233';"
+            onblur="this.style.boxShadow='none';">
+          <div class="valid-feedback">Location looks good!</div>
+          <div class="invalid-feedback">Please provide a valid location.</div>
+        </div>
+        <button class="btn btn-warning w-100 py-2 rounded-pill shadow-sm mt-3"
+          style="font-size: 1.1rem; font-weight: 600; letter-spacing: 0.5px; transition: background 0.2s, box-shadow 0.2s;"
+          onmouseover="this.style.background='#f59e42'; this.style.boxShadow='0 4px 16px #f59e4233';"
+          onmouseout="this.style.background='#fbbf24'; this.style.boxShadow='none';">
+          <i class="bi bi-pencil-square"></i> Save Changes
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

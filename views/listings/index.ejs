@@ -1,34 +1,348 @@
 <%layout("/layouts/boilerplate")%>
+<style>
+  #filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    overflow-x: auto;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem 0 0.5rem 0;
+    background: linear-gradient(90deg, #e0e7ff 60%, #f8fafc 100%);
+    border-radius: 1.5rem;
+    box-shadow: 0 2px 16px #6366f133;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+  }
+  .tax-toggle {
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    height: 3.5rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    box-shadow: 0 2px 8px #e0e7ff33;
+    z-index: 2;
+  }
+  .filter {
+    text-align: center;
+    margin: 0.5rem 0;
+    opacity: 0.8;
+    transition: opacity 0.2s, transform 0.2s;
+    padding: 0.5rem 0.7rem;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 2px 8px #e0e7ff33;
+    cursor: pointer;
+    min-width: 80px;
+    flex: 0 0 auto;
+  }
+  .filter:hover {
+    opacity: 1;
+    transform: scale(1.08);
+    background: linear-gradient(90deg, #fbbf24 10%, #f8fafc 90%);
+    box-shadow: 0 4px 16px #fbbf2433;
+  }
+  .filter i {
+    font-size: 1.7rem;
+    margin-bottom: 0.2rem;
+    color: #6366f1;
+    transition: color 0.2s;
+  }
+  .filter:hover i {
+    color: #f59e42;
+  }
+  .filter p {
+    font-size: 0.9rem;
+    margin-top: 0.2rem;
+    font-weight: 600;
+    color: #374151;
+    letter-spacing: 0.5px;
+  }
+  .tax-info {
+    display: none;
+    color: #ef4444;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  .listing-link {
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .listing-link:hover .listing-card {
+    box-shadow: 0 8px 32px #6366f133;
+    transform: translateY(-6px) scale(1.04);
+    border: 2px solid #6366f1;
+    background: linear-gradient(120deg, #e0e7ff 70%, #f8fafc 100%);
+  }
+  .listing-link:hover .price-block {
+    background: #e0e7ff;
+    box-shadow: 0 4px 16px #6366f133;
+    color: #2563eb;
+  }
+  .listing-card {
+    border-radius: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 12px #6366f133;
+    transition: box-shadow 0.2s, transform 0.2s, border 0.2s, background 0.2s;
+    background: linear-gradient(120deg, #f8fafc 70%, #e0e7ff 100%);
+    margin-bottom: 0.5rem;
+  }
+  .card-img-top {
+    border-radius: 1.5rem 1.5rem 0 0;
+    object-fit: cover;
+    height: 18rem;
+    transition: filter 0.2s;
+    filter: brightness(0.97);
+  }
+  .listing-card:hover .card-img-top {
+    filter: brightness(1.05);
+  }
+  .card-body {
+    padding: 1rem 1.2rem;
+  }
+  .card-text b {
+    font-size: 1.08rem;
+    color: #2563eb;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+  }
+  .card-text {
+    font-size: 1rem;
+    color: #374151;
+    font-weight: 500;
+  }
+  .card-text .price-block {
+    display: inline-block;
+    background: #fff;
+    border-radius: 1rem;
+    padding: 0.2rem 0.8rem;
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #22c55e;
+    box-shadow: 0 2px 8px #22c55e22;
+    margin-bottom: 0.2rem;
+    margin-right: 0.5rem;
+    margin-left: 0.2rem; /* Added margin to left for spacing */
+    vertical-align: middle;
+    transition: box-shadow 0.2s, background 0.2s;
+  }
+  @media (max-width: 991px) {
+    .row-cols-lg-3 > * {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+    .card-img-top {
+      height: 14rem;
+    }
+    .tax-toggle {
+      right: 1rem;
+    }
+  }
+  @media (max-width: 767px) {
+    .row-cols-md-2 > * {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+    .card-img-top {
+      height: 11rem;
+    }
+    #filters {
+      padding: 0.7rem 0 0.3rem 0;
+      border-radius: 1rem;
+    }
+    .listing-card {
+      border-radius: 1rem;
+    }
+    .tax-toggle {
+      position: static;
+      transform: none;
+      margin: 0.7rem auto 0.2rem auto;
+      width: 90%;
+      right: unset;
+      top: unset;
+      display: flex;
+      justify-content: center;
+    }
+    .filter-group {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+</style>
 
-    <div id="filters">
-        <div class="filter">
-            <i class="fa-solid fa-fire"></i>
-            Trending
+<div class="d-block d-md-none mb-3">
+  <button class="btn btn-outline-primary w-100 rounded-pill px-4 py-2 fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#mobileFilters" aria-expanded="false" aria-controls="mobileFilters">
+    <i class="fa-solid fa-filter me-2"></i> Filters
+  </button>
+  <div class="collapse mt-2" id="mobileFilters">
+    <div class="p-3 rounded-3" style="background: linear-gradient(90deg, #e0e7ff 60%, #f8fafc 100%); box-shadow: 0 2px 16px #6366f133;">
+      <div class="filter-group flex-wrap justify-content-center">
+        <div class="filter" onclick="window.location.href='/coming-soon'">
+          <div><i class="fa-solid fa-fire"></i></div>
+          <p>Trending</p>
         </div>
+        <div class="filter" onclick="window.location.href='/coming-soon'">
+          <div><i class="fa-solid fa-bed"></i></div>
+          <p>Rooms</p>
+        </div>
+        <div class="filter" onclick="window.location.href='/coming-soon'">
+          <div><i class="fa-solid fa-mountain-city"></i></div>
+          <p>Iconic</p>
+        </div>
+        <div class="filter" onclick="window.location.href='/coming-soon'">
+          <div><i class="fa-solid fa-mountain"></i></div>
+          <p>Mountain</p>
+        </div>
+        <div class="filter" onclick="window.location.href='/coming-soon'">
+          <div><i class="fa-brands fa-fort-awesome"></i></div>
+          <p>Castle</p>
+        </div>
+        <div class="filter" onclick="window.location.href='/coming-soon'">
+          <div><i class="fa-solid fa-person-swimming"></i></div>
+          <p>Pools</p>
+        </div>
+        <div class="filter" onclick="window.location.href='/coming-soon'">
+          <div><i class="fa-solid fa-campground"></i></div>
+          <p>Camping</p>
+        </div>
+        <div class="filter" onclick="window.location.href='/coming-soon'">
+          <div><i class="fa-solid fa-cow"></i></div>
+          <p>Farms</p>
+        </div>
+        <div class="filter" onclick="window.location.href='/coming-soon'">
+          <div><i class="fa-regular fa-snowflake"></i></div>
+          <p>Arctic</p>
+        </div>
+        <div class="filter" onclick="window.location.href='/coming-soon'">
+          <div><i class="fa-solid fa-igloo"></i></div>
+          <p>Domes</p>
+        </div>
+      </div>
+      <div class="tax-toggle mt-3 d-flex justify-content-center">
+        <div class="form-check-reverse form-switch">
+          <input class="form-check-input"
+                 type="checkbox" role="switch"
+                 id="flexSwitchCheckDefaultMobile"
+          />
+          <label class="form-check-label fw-semibold" for="flexSwitchCheckDefaultMobile">Prices with taxes</label>
+        </div>
+      </div>
     </div>
-    <hr>
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 mt-3">
-                <%for(let listing of allListings){%>
-                    <a href="/listings/<%=listing._id%>"  class="listing-link">
-            <div class="card col listing-card" >
-        <img src="<%= listing.image.url %>" class="card-img-top" style="height: 20rem;" alt="listing_image">
-       <div class="card-img-overlay"></div>
-        <div class="card-body">
-            <p class="card-text">
-                <b><%= listing.title %></b>
-                <br>
-                &#8377;
-                <% if (listing.price != null) { %>
-                    <%= listing.price.toLocaleString("en-IN") %>
-                <% } else { %>
-                    N/A
-                <% } %>
-                /night
-            </p>
-        </div>
-        </div>
-        </a>
-        <br>
-<%}%>
+  </div>
 </div>
 
+<div id="filters" class="d-none d-md-flex">
+  <div class="filter-group">
+    &nbsp; &nbsp;&nbsp; &nbsp;
+    <div class="filter" onclick="window.location.href='/coming-soon'">
+      <div><i class="fa-solid fa-fire"></i></div>
+      <p>Trending</p>
+    </div>
+    <div class="filter" onclick="window.location.href='/coming-soon'">
+      <div><i class="fa-solid fa-bed"></i></div>
+      <p>Rooms</p>
+    </div>
+    <div class="filter" onclick="window.location.href='/coming-soon'">
+      <div><i class="fa-solid fa-mountain-city"></i></div>
+      <p>Iconic</p>
+    </div>
+    <div class="filter" onclick="window.location.href='/coming-soon'">
+      <div><i class="fa-solid fa-mountain"></i></div>
+      <p>Mountain</p>
+    </div>
+    <div class="filter" onclick="window.location.href='/coming-soon'">
+      <div><i class="fa-brands fa-fort-awesome"></i></div>
+      <p>Castle</p>
+    </div>
+    <div class="filter" onclick="window.location.href='/coming-soon'">
+      <div><i class="fa-solid fa-person-swimming"></i></div>
+      <p>Pools</p>
+    </div>
+    <div class="filter" onclick="window.location.href='/coming-soon'">
+      <div><i class="fa-solid fa-campground"></i></div>
+      <p>Camping</p>
+    </div>
+    <div class="filter" onclick="window.location.href='/coming-soon'">
+      <div><i class="fa-solid fa-cow"></i></div>
+      <p>Farms</p>
+    </div>
+    <div class="filter" onclick="window.location.href='/coming-soon'">
+      <div><i class="fa-solid fa-igloo"></i></div>
+      <p>Domes</p>
+    </div>
+  </div>
+  <div class="tax-toggle ms-2">
+    <div class="form-check-reverse form-switch">
+      <input class="form-check-input"
+             type="checkbox" role="switch"
+             id="flexSwitchCheckDefault"
+      />
+      <label class="form-check-label fw-semibold" for="flexSwitchCheckDefault">Prices with taxes</label>
+    </div>
+  </div>
+</div>
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 mt-3">
+  <% for(let listing of allListings){ %>
+    <a href="/listings/<%=listing._id%>" class="listing-link">
+      <div class="card col listing-card">
+        <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image">
+        <div class="card-img-overlay"></div>
+        <div class="card-body">
+          <p class="card-text">
+            &nbsp; &nbsp;<b><%= listing.title %></b>
+            <br>
+            &nbsp; &nbsp; <span class="price-block"> &#8377;<%= listing.price.toLocaleString("en-IN") %> /night</span>
+            <i class="tax-info">&nbsp; &nbsp; +18% GST</i>
+          </p>
+        </div>
+      </div>
+    </a>
+  <% } %>
+</div>
+
+<script>
+  // Tax toggle for desktop
+  let taxSwitch = document.getElementById('flexSwitchCheckDefault');
+  if (taxSwitch) {
+    taxSwitch.addEventListener("click", () => {
+      let taxinfo = document.getElementsByClassName('tax-info');
+      for (info of taxinfo) {
+        if (info.style.display !== "inline") {
+          info.style.display = "inline";
+        } else {
+          info.style.display = "none";
+        }
+      }
+    });
+  }
+  // Tax toggle for mobile
+  let taxSwitchMobile = document.getElementById('flexSwitchCheckDefaultMobile');
+  if (taxSwitchMobile) {
+    taxSwitchMobile.addEventListener("click", () => {
+      let taxinfo = document.getElementsByClassName('tax-info');
+      for (info of taxinfo) {
+        if (info.style.display !== "inline") {
+          info.style.display = "inline";
+        } else {
+          info.style.display = "none";
+        }
+      }
+    });
+  }
+</script>
